@@ -12,8 +12,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.pathfindr.model.Mentor;
 import com.example.pathfindr.model.Role;
 import com.example.pathfindr.model.Student;
+import com.example.pathfindr.repository.MentorRepository;
 import com.example.pathfindr.repository.StudentRepository;
 
 @Service
@@ -22,15 +24,25 @@ public class StudentDetailService implements UserDetailsService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private MentorRepository mentorRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         Student student = studentRepository.findByEmail(email);
-        if (student == null) {
+        Mentor mentor = mentorRepository.findByEmail(email);
+
+        if (student == null && mentor == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(student.getEmail(), student.getPassword(),
-                mapRolesToAuthorities(student.getRoles()));
+        if (student != null) {
+            return new org.springframework.security.core.userdetails.User(student.getEmail(), student.getPassword(),
+                    mapRolesToAuthorities(student.getRoles()));
+        } else {
+            return new org.springframework.security.core.userdetails.User(mentor.getEmail(), mentor.getPassword(),
+                    mapRolesToAuthorities(mentor.getRoles()));
+        }
 
     }
 
