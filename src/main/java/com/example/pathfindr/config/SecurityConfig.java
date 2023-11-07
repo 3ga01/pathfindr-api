@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 .hasAuthority("STUDENT")
                                 .requestMatchers("/mentor/**").hasAuthority("MENTOR")
                                 .anyRequest()
-                                .authenticated())
+                                .permitAll())
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/signUp")

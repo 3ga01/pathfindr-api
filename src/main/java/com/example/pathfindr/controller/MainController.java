@@ -16,6 +16,7 @@ import com.example.pathfindr.model.Role;
 import com.example.pathfindr.model.Student;
 import com.example.pathfindr.repository.RoleRepository;
 import com.example.pathfindr.repository.StudentRepository;
+import com.example.pathfindr.service.studentService.StudentService;
 
 @RestController
 public class MainController {
@@ -26,59 +27,19 @@ public class MainController {
     @Autowired
     RoleRepository roleRepository;
 
-    // @GetMapping("/login")
-    // public ModelAndView getLoginPage() {
-    //     return new ModelAndView("login");
-    // }
+    @Autowired
+    StudentService studentService;
 
-    // @GetMapping("/signUp")
-    // public ModelAndView getSignUpPage() {
-    //     return new ModelAndView("signUp");
-    // }
+    @PostMapping("/signUpStudent")
+    public ResponseEntity<String> addNewUser(@RequestBody Student student) {
+        try {
+            studentService.saveStudent(student);
+            return ResponseEntity.ok("Student added successfully");
+        }
 
-    @CrossOrigin
-    @PostMapping("/data")
-    public String getData() {
-        return "Hello World";
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
-    // @PostMapping("/signUp")
-    // // @CrossOrigin
-    // public ResponseEntity<String> addNewUser(@RequestBody Student student) {
-
-    // Role role = roleRepository.findByName("STUDENT").get();
-    // student.setRoles(Collections.singletonList(role));
-    // studentRepository.save(student);
-    // return ResponseEntity.ok("User added successfully");
-
-    // }
-
-    @GetMapping("/signUp")
-    public String signUpPage() {
-        // Your controller logic here
-        return "signUp"; // This should match the template name
-    }
-
-    @PostMapping("/signUp")
-    public String addNewUser(@RequestBody Student student) {
-
-        student.setPassword(new BCryptPasswordEncoder().encode(student.getPassword()));
-        Role role = roleRepository.findByName("STUDENT").get();
-        student.setRoles(Collections.singletonList(role));
-        studentRepository.save(student);
-        return "User added successfully";
-
-    }
-
-    // @PostMapping("/signUp")
-    // public ResponseEntity<?> createStudent(@RequestBody Student student) {
-    // try {
-    // // You may want to perform validation or other operations here before saving
-    // Student savedStudent = studentRepository.save(student);
-    // return ResponseEntity.ok(savedStudent);
-    // } catch (Exception e) {
-    // return ResponseEntity.badRequest().body("Failed to create the student: " +
-    // e.getMessage());
-    // }
-    // }
 }

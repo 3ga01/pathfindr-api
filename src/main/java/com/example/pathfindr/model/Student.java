@@ -66,6 +66,17 @@ public class Student implements UserDetails {
         this.password = password;
     }
 
+    @Column(name = "token", nullable = false)
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @ManyToOne
     @JoinColumn(name = "mentor_id")
     private Mentor mentor;
@@ -78,20 +89,18 @@ public class Student implements UserDetails {
         this.mentor = mentor;
     }
 
-   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 
     @JoinTable(name = "student_roles", joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
 
-   
-
     public List<Role> getRoles() {
-    return roles;
-}
+        return roles;
+    }
 
-public void setRoles(List<Role> roles) {
-    this.roles = roles;
-}
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

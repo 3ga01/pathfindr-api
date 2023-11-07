@@ -4,7 +4,7 @@ public interface ValidationService {
 
     void validateToken(String token);
 
-    void validatePassword(String password, String confirmPassword);
+    void validatePassword(String password);
 
     void validateEmail(String email);
 

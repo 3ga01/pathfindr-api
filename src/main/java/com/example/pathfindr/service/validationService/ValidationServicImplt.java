@@ -3,6 +3,9 @@ package com.example.pathfindr.service.validationService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ValidationServicImplt implements ValidationService {
 
     private String usernamePattern = "^(?![0-9 ])[a-zA-Z0-9_-]{3,20}$";
@@ -19,19 +22,18 @@ public class ValidationServicImplt implements ValidationService {
     }
 
     @Override
-    public void validatePassword(String password, String confirmPassword) {
+    public void validatePassword(String password) {
         Matcher matcher = Pattern.compile(passwordPattern).matcher(password);
 
         if (password == "") {
 
             throw new IllegalArgumentException(
                     "password required");
-
         }
 
         if (!matcher.matches()) {
             throw new IllegalArgumentException(
-                    "Invalid email!!!");
+                    "Invalid password!!!");
         }
 
     }
@@ -69,7 +71,5 @@ public class ValidationServicImplt implements ValidationService {
                     "Invalid username!!!");
         }
     }
-
-   
 
 }
